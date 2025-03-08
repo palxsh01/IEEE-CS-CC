@@ -1,31 +1,32 @@
 #include <iostream>
 using namespace std;
-#define MAX 50  
+//Constant for maximum array size
+#define MAX 50    
 
 class stack {
     private:
-    int minStack[MAX];  
-    int maxStack[MAX];  
-    int mainStack[MAX]; 
-    int top;            
+    int minStack[MAX];    //Initialize main array
+    int maxStack[MAX];    //Initialize array to retrieve min value 
+    int mainStack[MAX];   //Initialize array to retrieve max value
+    int top;              //Initialize variable to store top index
 
     public:
-    stack() {
+    stack() {             //Constructor to initialize top
         top = -1;    
     }
 
     void push(int x) {
-        if (top + 1 >= MAX) {  
+        if (top + 1 >= MAX) {    //Stack Overflow
             cout << "Stack full!" << endl;
             return;
         }
-        top++;    
+        top++;    //Increment top to store new data 
         mainStack[top] = x;
 
-        if (top == 0) {     
+        if (top == 0) {     //Initializing empty stack
             minStack[top] = x;
             maxStack[top] = x;
-        } else {
+        } else {            //Adding pushed data to min or max based on value
             minStack[top] = min(x, minStack[top - 1]);
             maxStack[top] = max(x, mainStack[top - 1]);
         }
@@ -34,58 +35,58 @@ class stack {
     }
 
     void pop() {
-        if (top == -1) {
+        if (top == -1) {    //Stack Underflow
             cout << "Stack empty!" << endl;
             return;
         }
-        top--;
+        top--;    //Decrement top to delete last element
 
         cout << "Data popped!" << endl;
     }
 
-    int getTop() {
-        if (top == -1) {
-            cout << "Stack empty!" << endl;
-            return -1;
-        }
-        return mainStack[top];
-    }
-
-    int getMin() {
-        if (top == -1) {
-            cout << "Stack empty!" << endl;
-            return -1;
-        }
-        return minStack[top];
-    }
-
-    int getMax() {
-        if (top == -1) {
-            cout << "Stack empty!" << endl;
-            return -1;
-        }
-        return maxStack[top];
-    }
-
-    void display() {
-        if (top == -1) {
+    void getTop() {
+        if (top == -1) {    //Stack Underflow
             cout << "Stack empty!" << endl;
             return;
         }
-        for (int i = 0; i <= top; i++) {
+        cout << "Data at top index: " <<mainStack[top] << endl;    //Return data at top index in stack
+    }
+
+    void getMin() {
+        if (top == -1) {    //Stack Underflow
+            cout << "Stack empty!" << endl;
+            return;
+        }
+        cout << "Minimum value in stack: " << minStack[top] << endl;    //Return minimum value in stack
+    }
+
+    void getMax() {
+        if (top == -1) {    //Stack Underflow
+            cout << "Stack empty!" << endl;
+            return;
+        }
+        cout << "Maximum value in stack: " << maxStack[top] << endl;    //Return maximum value in stack
+    }
+
+    void display() {
+        if (top == -1) {    //Stack Underflow
+            cout << "Stack empty!" << endl;
+            return;
+        }
+        for (int i = 0; i <= top; i++) {    //Loop to print all elements in stack
             cout << "Index " << i + 1 << ": " << mainStack[i] << endl;
         }
     }
 };
 
-void menu(stack a) {
+void menu(stack a) {    //Function to perform operations
     int m;
-    cout << "Push (1)  |  Pop (2)  |  Top (3)  |  getMin (4)  |  getMax (5)  |  Display (6)" << endl;
+    cout << "Push (1)  |  Pop (2)  |  Top (3)  |  getMin (4)  |  getMax (5)  |  Display (6)  |  Exit (7)" << endl;    //Options in the menu
     cout << "Select an option: ";
     cin >> m;
     if (m == 1) {
         int x;
-        cout << "Enter data to push: ";
+        cout << "Enter data to push: ";    //Input data to push onto stack
         cin >> x;
         a.push(x);
     } else if (m == 2) {
@@ -98,24 +99,29 @@ void menu(stack a) {
         a.getMax();
     } else if (m == 6) {
         a.display();
+    } else if (m == 7) {
+        cout << "Program Terminated.";
+        return;
     } else {
-        cout << "Incorrect input!" << endl;
+        cout << "Incorrect input!" << endl;    //Incorrect input error
     }
 
     string c;
-    cout << "Do you wish to continue? Yes (Y) or No (N): ";
+    cout << "Do you wish to continue? Yes (Y) or No (N): ";    //Option to continue program
     cin >> c;
     if (c == "Y" || c == "y") {
         menu(a);
     } else if (c == "N" || c == "n") {
         cout << "Program Terminated.";
+        return;
     } else {
-        cout << "Incorrect input!" << endl << "Program Terminated.";
+        cout << "Incorrect input!" << endl << "Program Terminated.";    //Incorrect input error
+        return;
     }
 }
 
 int main() {
-    stack a;
-    menu(a);
+    stack a;    //Initialize stack
+    menu(a);    //Call menu function
     return 0;
 }
